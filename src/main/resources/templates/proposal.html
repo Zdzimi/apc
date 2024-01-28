@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Podaj kod kreskowy produktu</title>
+</head>
+<body>
+
+  <form th:action="@{'/astra/propose/' + ${code}}" method="post" th:object="${proposal}">
+
+    <h2>Podaj kod kreskowy produktu którego u nas brakuje:</h2>
+
+    <input type="number" th:field="*{contractorId}" id="contractorId" th:value="${proposal.contractorId}" hidden>
+    <input type="number" th:field="*{barcode}" id="barcode" min="0">
+    <input type="number" th:field="*{neededAmount}" id="neededAmount" th:value="${proposal.neededAmount}" min="1">
+    <input type="checkbox" th:field="*{consentToNotification}" id="consentToNotification" th:checked="${proposal.consentToNotification}">
+
+    <button type="submit">Zamów</button>
+
+  </form>
+
+  <h2 th:if="${info} != null" th:text="${info}"></h2>
+
+  <table th:if="${!proposals.empty}">
+    <tr>
+      <th>Kod kreskowy</th>
+      <th>Data wpisu</th>
+      <th>Ilość</th>
+      <th>Powiadomienie</th>
+      <th>Usuwanie</th>
+    </tr>
+    <tr th:each="p : ${proposals}">
+      <td th:text="${p.barcode}"></td>
+      <td th:text="${#temporals.format(p.dateTime, 'dd-MM-yyyy HH:mm')}"></td>
+      <td th:text="${#numbers.formatInteger(p.amount, 1)}"></td>
+      <td th:text="${p.consentToNotification} ? 'Tak' : 'Nie'"></td>
+      <td>
+        <form th:action="@{/astra/delete-propose(id=${p.id},code=${code})}" method="post">
+          <button type="submit">usuń</button>
+        </form>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

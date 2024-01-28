@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Podaj numer karty</title>
+</head>
+<body>
+
+  <form th:action="@{/astra/code-sent}" method="get">
+    <h2>Podaj numer karty lojalnościowej:</h2>
+    <input type="number" name="cardId">
+    <button type="submit">Ok</button>
+  </form>
+
+</body>
+</html>

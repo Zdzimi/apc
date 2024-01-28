@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin</title>
+</head>
+<body>
+
+  <form th:action="@{/astra/admin/${code}(days=30)}">
+    <button type="submit">Znajdź ostatnie 30 dni</button>
+  </form>
+
+  <form th:action="@{/astra/admin/${code}(days=180)}">
+    <button type="submit">Znajdź ostatnie 180 dni</button>
+  </form>
+
+  <form th:action="@{/astra/admin/${code}(days=365)}">
+    <button type="submit">Znajdź ostatnie 365 dni</button>
+  </form>
+
+  <h2 th:text="${info}"></h2>
+  <table>
+    <tr>
+      <td>Kod kreskowy</td>
+      <td>Ilość</td>
+    </tr>
+    <tr th:each="s : ${summary}">
+      <td th:text="${s.barcode}"></td>
+      <td th:text="${s.amount}"></td>
+    </tr>
+  </table>
+
+  <h2>Ostatnie 30 dni:</h2>
+  <table>
+    <tr>
+      <td>Kod kreskowy</td>
+      <td>Data</td>
+      <td>Ilość</td>
+    </tr>
+    <tr th:each="p : ${lastMonthProposals}">
+      <td th:text="${p.barcode}"></tdth>
+      <td th:text="${#temporals.format(p.dateTime, 'dd-MM-yyyy HH:mm')}"></tdth>
+      <td th:text="${p.amount}"></tdth>
+    </tr>
+  </table>
+
+</body>
+</html>
