@@ -3,11 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <title>Kod niepoprawny</title>
+  <style>
+    * {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: cadetblue;
+      color: black;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    header, footer {
+      padding: 2vh;
+    }
+
+    a {
+      color: yellow;
+    }
+  </style>
 </head>
 <body>
 
-<h1 th:text="${exception}"></h1>
-<a th:href="@{/astra}">Powrót</a>
+  <header>
+    <h2>Sprawdzanie dostępności produktów.</h2>
+  </header>
+
+  <section>
+    <h1 th:text="${exception}"></h1>
+    <a th:href="@{/astra}">Powrót</a>
+  </section>
+
+  <footer>
+    <h2>C.H. Astra &copy;</h2>
+  </footer>
 
 </body>
 </html>

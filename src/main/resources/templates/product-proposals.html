@@ -2,7 +2,7 @@
 <html lang="pl" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Podaj numer karty</title>
+  <title>Admin</title>
   <style>
     * {
       font-family: 'Courier New', Courier, monospace;
@@ -24,51 +24,49 @@
       padding: 2vh;
     }
 
-    form {
+    section {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      min-height: 50vh;
+      margin: 8vh
     }
 
     h3 {
       margin: 5vh;
     }
 
-    input, button {
-      background: none;
-      border: 2px solid black;
-      border-radius: 1vh;
-      padding-top: 2vh;
-      padding-bottom: 2vh;
-      width: 50vw;
-      margin: 2vh auto;
+    th {
+      padding: 2vh;
     }
-
-    button:hover {
-      cursor: pointer;
-      background: black;
-      color: cadetblue;
-    }
-
   </style>
 </head>
 <body>
 
   <header>
-    <h2>Sprawdzanie dostępności produktów.</h2>
+    <h2>Panel administracyjny.</h2>
   </header>
 
-  <form th:action="@{/astra/code-sent}" method="get">
+  <section>
 
-    <h3>Podaj numer karty lojalnościowej aby sprawdzić dostępność produktu:</h3>
+    <h3>Wszystkie wyszukiwania produktu <span th:text="${barcode}"></span>:</h3>
+    <table>
+      <tr>
+        <th>Kod kreskowy</th>
+        <th>Data</th>
+        <th>Klient</th>
+        <th>E-mail</th>
+        <th>Kod karty</th>
+      </tr>
+      <tr th:each="p : ${proposals}">
+        <td th:text="${p.barcode}"></td>
+        <td th:text="${#temporals.format(p.dateTime, 'dd-MM-yyyy HH:mm')}"></td>
+        <td th:text="${p.contractor.name}"></td>
+        <td th:text="${p.contractor.email}"></td>
+        <td th:text="${p.contractor.cardCode}"></td>
+      </tr>
+    </table>
 
-    <label for="id">Numer karty</label>
-    <input type="text" name="cardId" id="id">
-
-    <button type="submit">Ok</button>
-
-  </form>
+  </section>
 
   <footer>
     <h2>C.H. Astra &copy;</h2>

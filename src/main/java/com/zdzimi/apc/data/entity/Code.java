@@ -18,7 +18,7 @@ public class Code {
   @Column(name = "kod")
   private String code;
 
-  @Column(name = "datakodu")
-  private LocalDateTime creationDateTime;
+  @Column(name = "datawygasniecia")
+  private LocalDateTime expirationDateTime;
 
 }

@@ -3,46 +3,104 @@
 <head>
   <meta charset="UTF-8">
   <title>Admin</title>
+  <style>
+    * {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: cadetblue;
+      color: black;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    header, footer {
+      padding: 2vh;
+    }
+
+    section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 8vh
+    }
+
+    h3 {
+      margin: 5vh;
+    }
+
+    th {
+      padding: 2vh;
+    }
+
+    a {
+      color: yellow;
+    }
+  </style>
 </head>
 <body>
 
-  <form th:action="@{/astra/admin/${code}(days=30)}">
-    <button type="submit">Znajdź ostatnie 30 dni</button>
-  </form>
+  <header>
+    <h2>Panel administracyjny.</h2>
+  </header>
 
-  <form th:action="@{/astra/admin/${code}(days=180)}">
-    <button type="submit">Znajdź ostatnie 180 dni</button>
-  </form>
+  <section>
 
-  <form th:action="@{/astra/admin/${code}(days=365)}">
-    <button type="submit">Znajdź ostatnie 365 dni</button>
-  </form>
+    <a th:href="@{'/astra/admin/' + ${code} + '?days=30'}">Znajdź ostatnie 30 dni</a>
+    <a th:href="@{'/astra/admin/' + ${code} + '?days=180'}">Znajdź ostatnie 180 dni</a>
+    <a th:href="@{'/astra/admin/' + ${code} + '?days=365'}">Znajdź ostatnie 365 dni</a>
 
-  <h2 th:text="${info}"></h2>
-  <table>
-    <tr>
-      <td>Kod kreskowy</td>
-      <td>Ilość</td>
-    </tr>
-    <tr th:each="s : ${summary}">
-      <td th:text="${s.barcode}"></td>
-      <td th:text="${s.amount}"></td>
-    </tr>
-  </table>
+  </section>
 
-  <h2>Ostatnie 30 dni:</h2>
-  <table>
-    <tr>
-      <td>Kod kreskowy</td>
-      <td>Data</td>
-      <td>Ilość</td>
-    </tr>
-    <tr th:each="p : ${lastMonthProposals}">
-      <td th:text="${p.barcode}"></tdth>
-      <td th:text="${#temporals.format(p.dateTime, 'dd-MM-yyyy HH:mm')}"></tdth>
-      <td th:text="${p.amount}"></tdth>
-    </tr>
-  </table>
+  <section>
+
+    <h3 th:text="${info}"></h3>
+    <table>
+      <tr>
+        <th>Kod kreskowy</th>
+        <th>Ilość</th>
+      </tr>
+      <tr th:each="s : ${summary}">
+        <td>
+          <a th:href="@{'/astra/admin/product/' + ${code} + '?barcode=' + ${s.barcode}}"><span th:text="${s.barcode}"></span></a>
+        </td>
+        <td th:text="${s.amount}"></td>
+      </tr>
+    </table>
+
+  </section>
+
+  <section>
+
+    <h3>Ostatnie 30 dni:</h3>
+    <table>
+      <tr>
+        <th>Kod kreskowy</th>
+        <th>Data</th>
+        <th>Klient</th>
+        <th>E-mail</th>
+        <th>Kod karty</th>
+      </tr>
+      <tr th:each="p : ${lastMonthProposals}">
+        <td th:text="${p.barcode}"></td>
+        <td th:text="${#temporals.format(p.dateTime, 'dd-MM-yyyy HH:mm')}"></td>
+        <td th:text="${p.contractor.name}"></td>
+        <td th:text="${p.contractor.email}"></td>
+        <td th:text="${p.contractor.cardCode}"></td>
+      </tr>
+    </table>
+
+  </section>
+
+  <footer>
+    <h2>C.H. Astra &copy;</h2>
+  </footer>
 
 </body>
 </html>

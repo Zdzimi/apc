@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CommoditiesRepository extends JpaRepository<Commodity, Long> {
 
-  @Query("select c from Commodity c left join fetch c.amount a where c.code = ?1 and a.amount >= ?2")
-  Optional<Commodity> findByBarcodeAtLeastAmount(String barcode, int neededAmount);
+  @Query("select c from Commodity c left join fetch c.amount a where c.code = ?1 and a.amount >= 1")
+  Optional<Commodity> findByBarcodeAtLeastAmount(String barcode);
   
 }

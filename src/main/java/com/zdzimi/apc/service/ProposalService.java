@@ -24,7 +24,7 @@ public class ProposalService {
     proposal.setContractorId(cp.getContractorId());
     proposal.setBarcode(cp.getBarcode());
     proposal.setDateTime(LocalDateTime.now());
-    proposal.setAmount(cp.getNeededAmount());
+    proposal.setAdminNotification(true);
     proposal.setConsentToNotification(cp.isConsentToNotification());
     repository.save(proposal);
   }
@@ -43,9 +43,9 @@ public class ProposalService {
     Map<String, Integer> map = new TreeMap<>();
     for (Proposal proposal : proposals) {
       if (map.containsKey(proposal.getBarcode())) {
-        map.put(proposal.getBarcode(), map.get(proposal.getBarcode()) + proposal.getAmount());
+        map.put(proposal.getBarcode(), map.get(proposal.getBarcode()) + 1);
       } else {
-        map.put(proposal.getBarcode(), proposal.getAmount());
+        map.put(proposal.getBarcode(), 1);
       }
     }
 
@@ -58,6 +58,14 @@ public class ProposalService {
     }
     result.sort((o1, o2) -> o2.getAmount() - o1.getAmount());
     return result;
+  }
+
+  public void deleteAll(Long contractorId) {
+    repository.deleteAll(repository.findByContractorId(contractorId));
+  }
+
+  public Collection<Proposal> getAll(String barcode) {
+    return repository.findByBarcode(barcode);
   }
 
 }

@@ -24,10 +24,14 @@ public class Proposal {
   @Column(name = "datadodania")
   private LocalDateTime dateTime;
 
-  @Column(name = "ilosc")
-  private int amount;
+  @Column(name = "powiadomienieadmina")
+  private boolean adminNotification;
 
   @Column(name = "zgodapowiadomienia")
   private boolean consentToNotification;
+
+  @ManyToOne
+  @JoinColumn(name = "kontrid", updatable = false, insertable = false)
+  private Contractor contractor;
 
 }

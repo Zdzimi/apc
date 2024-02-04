@@ -12,8 +12,8 @@ public class CommodityService {
 
   private final CommoditiesRepository repository;
 
-  public Optional<Commodity> checkProductAvailability(String barcode, int neededAmount) {
-    return repository.findByBarcodeAtLeastAmount(barcode, neededAmount);
+  public Optional<Commodity> checkProductAvailability(String barcode) {
+    return repository.findByBarcodeAtLeastAmount(barcode);
   }
 
 }

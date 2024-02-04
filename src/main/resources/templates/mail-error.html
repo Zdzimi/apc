@@ -2,7 +2,7 @@
 <html lang="pl" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Kod wysłany</title>
+  <title>Nie można wysłać</title>
   <style>
     * {
       font-family: 'Courier New', Courier, monospace;
@@ -23,6 +23,10 @@
     header, footer {
       padding: 2vh;
     }
+
+    a {
+      color: yellow;
+    }
   </style>
 </head>
 <body>
@@ -31,7 +35,10 @@
     <h2>Sprawdzanie dostępności produktów.</h2>
   </header>
 
-  <h1>Wysłaliśmy link do formularza na adres: "<span th:text="${email}"></span>".</h1>
+  <section>
+    <h1>Nie udało się wysłać wiadomości e-mail, <span th:text="${exception}"></span>. Spróbuj ponownie później.</h1>
+    <a th:href="@{/astra}">Podaj numer karty</a>
+  </section>
 
   <footer>
     <h2>C.H. Astra &copy;</h2>

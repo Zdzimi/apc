@@ -3,44 +3,124 @@
 <head>
   <meta charset="UTF-8">
   <title>Podaj kod kreskowy produktu</title>
+  <style>
+    * {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: cadetblue;
+      color: black;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    header, footer {
+      padding: 2vh;
+    }
+
+    .fo {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 8vh
+    }
+
+    h3 {
+      margin: 5vh;
+    }
+
+    input, #check, #deleteAll {
+      background: none;
+      border: 2px solid black;
+      border-radius: 1vh;
+      padding-top: 2vh;
+      padding-bottom: 2vh;
+      width: 50vw;
+      margin: 2vh auto;
+    }
+
+    #check:hover, .delete:hover, #deleteAll:hover {
+      cursor: pointer;
+      background: black;
+      color: cadetblue;
+    }
+
+    .delete {
+      background: none;
+      border: 2px solid black;
+      border-radius: 1vh;
+      padding: 2vh;
+    }
+
+    th {
+      padding: 2vh;
+    }
+  </style>
 </head>
 <body>
 
-  <form th:action="@{'/astra/propose/' + ${code}}" method="post" th:object="${proposal}">
+  <header>
+    <h2>Sprawdzanie dostępności produktów.</h2>
+  </header>
 
-    <h2>Podaj kod kreskowy produktu którego u nas brakuje:</h2>
+  <section>
 
-    <input type="number" th:field="*{contractorId}" id="contractorId" th:value="${proposal.contractorId}" hidden>
-    <input type="number" th:field="*{barcode}" id="barcode" min="0">
-    <input type="number" th:field="*{neededAmount}" id="neededAmount" th:value="${proposal.neededAmount}" min="1">
-    <input type="checkbox" th:field="*{consentToNotification}" id="consentToNotification" th:checked="${proposal.consentToNotification}">
+    <form th:action="@{'/astra/propose/' + ${code}}" class="fo" method="post" th:object="${proposal}">
 
-    <button type="submit">Zamów</button>
+      <h3>Podaj kod kreskowy produktu którego szukasz:</h3>
 
-  </form>
+      <input type="number" th:field="*{contractorId}" id="contractorId" th:value="${proposal.contractorId}" hidden>
 
-  <h2 th:if="${info} != null" th:text="${info}"></h2>
+      <label for="barcode">Kod kreskowy</label>
+      <input type="text" th:field="*{barcode}" id="barcode">
+      <p th:each="err : ${#fields.errors('barcode')}" th:text="${err}" class="error"></p>
 
-  <table th:if="${!proposals.empty}">
-    <tr>
-      <th>Kod kreskowy</th>
-      <th>Data wpisu</th>
-      <th>Ilość</th>
-      <th>Powiadomienie</th>
-      <th>Usuwanie</th>
-    </tr>
-    <tr th:each="p : ${proposals}">
-      <td th:text="${p.barcode}"></td>
-      <td th:text="${#temporals.format(p.dateTime, 'dd-MM-yyyy HH:mm')}"></td>
-      <td th:text="${#numbers.formatInteger(p.amount, 1)}"></td>
-      <td th:text="${p.consentToNotification} ? 'Tak' : 'Nie'"></td>
-      <td>
-        <form th:action="@{/astra/delete-propose(id=${p.id},code=${code})}" method="post">
-          <button type="submit">usuń</button>
-        </form>
-      </td>
-    </tr>
-  </table>
+      <label for="consentToNotification">Zgoda na powiadomienie</label>
+      <input type="checkbox" th:field="*{consentToNotification}" id="consentToNotification" th:checked="${proposal.consentToNotification}">
+
+      <button type="submit" id="check">Sprawdź</button>
+
+    </form>
+
+    <h3 th:if="${info} != null" th:text="${info}"></h3>
+
+  </section>
+
+  <section th:if="${!proposals.empty}" id="proposals" class="fo">
+
+    <table>
+      <tr>
+        <th>Kod kreskowy</th>
+        <th>Data wpisu</th>
+        <th>Powiadomienie</th>
+        <th>Usuwanie</th>
+      </tr>
+      <tr th:each="p : ${proposals}">
+        <td th:text="${p.barcode}"></td>
+        <td th:text="${#temporals.format(p.dateTime, 'dd-MM-yyyy HH:mm')}"></td>
+        <td th:text="${p.consentToNotification} ? 'Tak' : 'Nie'"></td>
+        <td>
+          <form th:action="@{/astra/delete-propose(id=${p.id},code=${code})}" method="post">
+            <button type="submit" class="delete">Usuń</button>
+          </form>
+        </td>
+      </tr>
+    </table>
+    <form th:if="${proposals.size} > 1" th:action="@{/astra/delete-all(contractorId=${proposal.contractorId},code=${code})}" method="post">
+      <button type="submit" id="deleteAll">Usuń wszystko</button>
+    </form>
+
+  </section>
+
+  <footer>
+    <h2>C.H. Astra &copy;</h2>
+  </footer>
 
 </body>
 </html>
